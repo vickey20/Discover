@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.vikram.discover.R;
 import com.vikram.discover.adapter.RecyclerViewAdapter;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RestaurantListFragment extends Fragment implements RestaurantView {
+public class RestaurantListFragment extends Fragment implements RestaurantView, RecyclerViewAdapter.OnItemClickListener {
 
     private static final String STATE_RESTAURANTS = "RESTAURANTS";
     private static final String STATE_RECYCLE_LAYOUT = "RECYCLE_LAYOUT";
@@ -58,7 +59,6 @@ public class RestaurantListFragment extends Fragment implements RestaurantView {
 
         presenter = new RestaurantListPresenter(this);
         restaurants = new ArrayList<>();
-        setRetainInstance(true);
     }
 
     @Nullable
@@ -72,7 +72,6 @@ public class RestaurantListFragment extends Fragment implements RestaurantView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         setRecyclerView();
         presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
     }
@@ -117,6 +116,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantView {
 
     private void setRecyclerView() {
         adapter = new RecyclerViewAdapter(context);
+        adapter.setOnItemClickListener(this);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adapter);
@@ -159,5 +159,10 @@ public class RestaurantListFragment extends Fragment implements RestaurantView {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onItemClick(Restaurant restaurant, int position) {
+        Toast.makeText(context, getString(R.string.clicked_item_toast) + " " + (position + 1), Toast.LENGTH_LONG).show();
     }
 }

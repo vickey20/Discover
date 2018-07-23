@@ -3,7 +3,6 @@ package com.vikram.discover.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(Restaurant restaurant);
+        void onItemClick(Restaurant restaurant, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -61,13 +60,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ButterKnife.bind(this, view);
         }
 
-        public void bind(final Restaurant restaurant, final OnItemClickListener onItemClickListener) {
-            Log.d("Adapter", "RecyclerViewAdapter bind");
+        public void bind(final Restaurant restaurant, final int position, final OnItemClickListener onItemClickListener) {
             name.setText(restaurant.getName());
             description.setText(restaurant.getDescription());
             status.setText(restaurant.getStatus());
             ratingCount.setText(String.valueOf(restaurant.getAverageRating()));
-            deliveryFee.setText("Delivery fee: " + restaurant.getDeliveryFee());
+            deliveryFee.setText(context.getString(R.string.delivery_fee) + restaurant.getDeliveryFee());
 
             Picasso.get().load(restaurant.getImageUrl()).into(image);
 
@@ -76,7 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //onItemClickListener.onItemClick(restaurant);
+                    onItemClickListener.onItemClick(restaurant, position);
                 }
             });
         }
@@ -103,6 +101,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((RestaurantHolder) holder).bind(restaurants.get(position), onItemClickListener);
+        ((RestaurantHolder) holder).bind(restaurants.get(position), position, onItemClickListener);
     }
 }

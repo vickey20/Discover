@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Discover</string>
+    <string name="delivery_fee">Delivery fee: </string>
     <string name="dialog_message">"Failed to load restaurants"</string>
     <string name="dialog_button_try_again">Try again</string>
+    <string name="clicked_item_toast">Clicked item</string>
 </resources>

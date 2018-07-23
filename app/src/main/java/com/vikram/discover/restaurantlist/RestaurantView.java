@@ -4,7 +4,7 @@ import com.vikram.discover.model.Restaurant;
 
 import java.util.ArrayList;
 
-interface RestaurantView {
+public interface RestaurantView {
     void setRestaurantList(ArrayList<Restaurant> restaurants);
     void notifyAdapter();
     void showProgressBar();
