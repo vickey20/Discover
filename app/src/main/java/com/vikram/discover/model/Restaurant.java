@@ -31,7 +31,16 @@ public class Restaurant implements Parcelable {
     @SerializedName("number_of_ratings")
     private int numberOfRatings;
 
-    public Restaurant() {}
+    public Restaurant(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.imageUrl = in.readString();
+        this.status = in.readString();
+        this.deliveryFee = in.readFloat();
+        this.averageRating = in.readFloat();
+        this.numberOfRatings = in.readInt();
+    }
 
     public int getId() {
         return id;
@@ -113,4 +122,15 @@ public class Restaurant implements Parcelable {
         parcel.writeFloat(averageRating);
         parcel.writeFloat(deliveryFee);
     }
+
+    public static final Parcelable.Creator<Restaurant> CREATOR
+            = new Parcelable.Creator<Restaurant>() {
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 }

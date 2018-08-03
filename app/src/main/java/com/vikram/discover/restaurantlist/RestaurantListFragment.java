@@ -2,6 +2,7 @@ package com.vikram.discover.restaurantlist;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -47,7 +48,9 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
     private Context context;
     OnFragmentInteractionListener listener;
 
-    public interface OnFragmentInteractionListener {}
+    public interface OnFragmentInteractionListener {
+        void findCurrentLocation();
+    }
 
     public static RestaurantListFragment newInstance() {
         return new RestaurantListFragment();
@@ -73,7 +76,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRecyclerView();
-        presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+        listener.findCurrentLocation();
     }
 
     @Override
@@ -154,7 +157,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
         builder.setPositiveButton(getString(R.string.dialog_button_try_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+                //presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+                listener.findCurrentLocation();
             }
         });
         AlertDialog dialog = builder.create();
@@ -164,5 +168,11 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
     @Override
     public void onItemClick(Restaurant restaurant, int position) {
         Toast.makeText(context, getString(R.string.clicked_item_toast) + " " + (position + 1), Toast.LENGTH_LONG).show();
+    }
+
+    public void currentLocationFound(Location location) {
+        presenter.fetchNearbyRestaurants(String.valueOf(location.getLatitude()),
+                String.valueOf(location.getLongitude()),
+                DEFAULT_OFFSET, DEFAULT_LIMIT);
     }
 }

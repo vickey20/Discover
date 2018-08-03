@@ -4,4 +4,6 @@
     <string name="dialog_message">"Failed to load restaurants"</string>
     <string name="dialog_button_try_again">Try again</string>
     <string name="clicked_item_toast">Clicked item</string>
+    <string name="location_permission_rationale">Discover uses your phone\'s current location to find restaurants nearest to you and deliver food quickly. Please allow the app to use location services to continue.</string>
+    <string name="ok">Ok</string>
 </resources>
