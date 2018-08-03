@@ -4,4 +4,6 @@
     <string name="dialog_message">"Failed to load restaurants"</string>
     <string name="dialog_button_try_again">Try again</string>
     <string name="clicked_item_toast">Clicked item</string>
+    <string name="location_rationale">This app uses your phone\\\'s current location to show you restaurants which are nearest to you and give you more personalized options. Please allow the app to use use the location service to be able to use such features.</string>
+    <string name="ok">Ok</string>
 </resources>

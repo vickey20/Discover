@@ -2,6 +2,7 @@ package com.vikram.discover.restaurantlist;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -47,7 +48,13 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
     private Context context;
     OnFragmentInteractionListener listener;
 
-    public interface OnFragmentInteractionListener {}
+    public void foundLastKnownLocation(Location location) {
+        presenter.fetchNearbyRestaurants(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), DEFAULT_OFFSET, DEFAULT_LIMIT);
+    }
+
+    public interface OnFragmentInteractionListener {
+        void findLastKnownLocation();
+    }
 
     public static RestaurantListFragment newInstance() {
         return new RestaurantListFragment();
@@ -59,6 +66,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
 
         presenter = new RestaurantListPresenter(this);
         restaurants = new ArrayList<>();
+        listener.findLastKnownLocation();
     }
 
     @Nullable
@@ -73,7 +81,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRecyclerView();
-        presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+        //presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
     }
 
     @Override
@@ -154,7 +162,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantView, 
         builder.setPositiveButton(getString(R.string.dialog_button_try_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+                //presenter.fetchNearbyRestaurants(DEFAULT_LAT, DEFAULT_LNG, DEFAULT_OFFSET, DEFAULT_LIMIT);
+                listener.findLastKnownLocation();
             }
         });
         AlertDialog dialog = builder.create();
